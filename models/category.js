@@ -1,12 +1,23 @@
 const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  countInStock: {
-    type: Number,
-    required: true
+const categorySchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  icon: {
+    type: String,
+  },
+  color: {
+    type: String,
   }
 });
 
-exports.Product = mongoose.model('Products', productSchema);
+
+categorySchema.method('toJSON', function () {
+  const { __v, ...object } = this.toObject();
+  const { _id: id, ...result } = object;
+  return { ...result, id };
+});
+
+exports.Category = mongoose.model('Category', categorySchema);
